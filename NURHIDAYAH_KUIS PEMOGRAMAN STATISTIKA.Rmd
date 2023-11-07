@@ -1,0 +1,175 @@
+---
+title: "KUIS PEMSTAT"
+author: "Nurhidayah"
+date: "2023-11-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+#NOMOR 1
+data <- c(12, 8, 10, 5, 17)
+xi <- function(arr) {
+  n <- length(arr)
+  
+  for (i in 2:n) {
+    for (j in i:2) {
+      if (arr[j - 1] > arr[j]) {
+        # Tukar nilai
+        temp <- arr[j - 1]
+        arr[j - 1] <- arr[j]
+        arr[j] <- temp
+      }
+    }
+  }
+  
+  return(arr)
+}
+
+xi_sorting <-xi(data)
+print(xi_sorting)
+```
+```{r}
+#nomor 2
+# Membuat fungsi fx
+fx <- function(x) {
+  exp(2*x)-x-6
+}
+# Membuat fungsi fx
+fx <- function(x) {
+  exp(2*x)-x-6
+}
+
+# Membuat kurva
+curve(fx, xlim=c(-3,3), col='steelblue',lwd=2)
+abline(h=0)
+abline(v=0)
+# newton raphson Mendefinisikan persamaan
+fx_nr <- function(x) {
+  rumus_fungsi <- function(x) exp(2*x)-x-6
+  fungsi <- rumus_fungsi(x)
+  # mencari turunan dengan menggunakan fungsi Deriv
+  # dari package Deriv
+  rumus_turunan <- Deriv::Deriv(fx)
+  turunan <- rumus_turunan(x)
+  return(c("fungsi"=fungsi,"turunan"=turunan))
+}
+
+# newton raphson
+nr_res <- newtonraphson(ftn=fx_nr, x0=1)
+nr_res
+# secant
+sec_res <- secant(fx, x0=0, x1=2)
+sec_res
+# bisection
+bis_res <- bisection(fx, xl=-3, xr=3)
+bis_res
+```
+```{r}
+#nomor 3
+library(pracma)  # Menggunakan paket pracma untuk fungsi gamma dan kuadran Gauss
+
+# Definisikan fungsi kepekatan peluang
+f <- function(x) {
+  return (15 * x^4 * (1 - x^5)^2)
+}
+
+# Metode Trapezoidal
+trapezoidal <- function(f, a, b, n) {
+  h <- (b - a) / n
+  integral <- (f(a) + f(b)) / 2
+  
+  for (i in 1:(n - 1)) {
+    integral <- integral + f(a + i * h)
+  }
+  
+  integral <- integral * h
+  return(integral)
+}
+
+# Metode Simpson dengan n=4
+simpson <- function(f, a, b, n) {
+  h <- (b - a) / n
+  integral <- f(a) + f(b)
+  
+  for (i in 1:(n - 1)) {
+    if (i %% 2 == 0) {
+      integral <- integral + 2 * f(a + i * h)
+    } else {
+      integral <- integral + 4 * f(a + i * h)
+    }
+  }
+  
+  integral <- integral * h / 3
+  return(integral)
+}
+
+# Metode four point Gauss Quadrature
+gauss_quadrature <- function(f) {
+  nodes <- c(-sqrt(3/7 + 2/7 * sqrt(6/5)), -sqrt(3/7 - 2/7 * sqrt(6/5)), sqrt(3/7 - 2/7 * sqrt(6/5)), sqrt(3/7 + 2/7 * sqrt(6/5)))
+  weights <- c((18 + sqrt(30)) / 36, (18 - sqrt(30)) / 36, (18 - sqrt(30)) / 36, (18 + sqrt(30)) / 36)
+  
+  integral <- sum(weights * f(nodes))
+  return(integral)
+}
+
+# Hitung nilai ekspektasi menggunakan metode Trapezoidal
+a <- 0
+b <- 1
+n <- 4
+hasil_trapezoidal <- trapezoidal(f, a, b, n)
+cat("Hasil metode Trapezoidal:", hasil_trapezoidal, "\n")
+
+# Hitung nilai ekspektasi menggunakan metode Simpson dengan n=4
+hasil_simpson <- simpson(f, a, b, n)
+cat("Hasil metode Simpson (n=4):", hasil_simpson, "\n")
+
+# Hitung nilai ekspektasi menggunakan metode four point Gauss Quadrature
+hasil_gauss_quadrature <- gauss_quadrature(f)
+cat("Hasil metode Gauss Quadrature:", hasil_gauss_quadrature, "\n")
+
+# Nilai eksak dari E(X)
+nilai_eksak <- 3 * gamma(5/3) * gamma(3) * gamma(21/5)
+cat("Nilai eksak dari E(X):", nilai_eksak, "\n")
+
+```
+```{r}
+#nomor 4
+# Fungsi untuk menghitung deret
+jumlahDeret <- function(n) {
+  total <- 8
+  suku_sebelumnya <- 8
+  
+  for (i in 2:n) {
+    beda <- 5 + (i - 2) * 2   
+    suku_sekarang <- suku_sebelumnya + beda
+    total <- total + suku_sekarang  
+    suku_sebelumnya <- suku_sekarang
+  }
+  
+  return(total)
+}
+```
+
